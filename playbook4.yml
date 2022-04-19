@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: yes
+  remote_user: ansible
+  tasks:
+   -  name: To edit the fstab add line
+      group:
+          name=b21a
+          gid=900
+          state=present
+---
+- hosts: all
+  become: yes
+  remote_user: ansible
+  tasks:
+   -  name: To edit the fstab add line
+      user:
+         name=bheem
+         group=b21a
+         createhome=yes
+         shell=/bin/bash

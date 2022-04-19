@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: yes
+  remote_user: ansible
+  tasks:
+   -  name: To edit the fstab add line
+      lineinfile: dest=/etc/fstab line='10.10.27.17 /users ext4 defaults 1 1'                  ---
+- hosts: all
+  become: yes
+  remote_user: ansible
+  tasks:
+   -  name: To edit the fstab add line
+      lineinfile:
+              dest=/etc/fstab
+              line='10.10.27.11 /users ext4 defaults 1 1'
+              mode=777	  
