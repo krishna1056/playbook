@@ -1,0 +1,59 @@
+---
+- hosts: all
+  tasks: 
+   - name: To install git 
+     package: name=git state=present
+     become: yes
+---
+- hosts: all
+  tasks:
+   - name: To un-install git
+     package: name=git state=absent
+     become: yes
+---
+- hosts: all
+  remote_user: ansible
+  become_user: root
+  tasks:
+   - name: To install httpd
+     package: name=httpd state=latest
+     become: yes
+---
+- hosts: all
+  become: yes
+  remote_user: ansible
+  become_user: root
+  tasks:
+   - name: To copy the script
+     copy: src=/tmp/OSPATCH_15042022.sh dest=/tmp/
+   - name: To set permissions
+     file: path=/tmp/OSPATCH_15042022.sh owner=ansible group=ansible mode=0777
+   - name: To execute the script
+     shell: /bin/bash /tmp/OSPATCH_15042022.sh
+   - name: To script output into another file-system
+     shell: sh /tmp/OSPATCH_15042022.sh >> /opt/raju
+   - name: To creating group
+     group: name=b21a gid=800 state=present
+   - name: To creating user
+     user: name=prasu group=b21a createhome=yes shell=/bin/bash
+---
+- hosts: all
+  become: yes
+  remote_user: ansible
+  tasks:
+   -  name: To edit the fstab add line
+      group:
+          name=b21a
+          gid=900
+          state=present
+---
+- hosts: all
+  become: yes
+  remote_user: ansible
+  tasks:
+   -  name: To edit the fstab add line
+      user:
+         name=bheem
+         group=b21a
+         createhome=yes
+         shell=/bin/bash
